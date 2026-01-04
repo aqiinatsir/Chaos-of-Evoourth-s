@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>P2W - Chaos of Evoourth's</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .logo-img {
+            height: 35px;
+            width: auto;
+            object-fit: contain;
+        }
+
+        .logo-text {
+            font-size: 18px;
+            font-weight: bold;
+            color: var(--accent-silver);
+            text-shadow: 0 0 10px rgba(192, 192, 192, 0.5);
+            margin-left: 10px;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header & Navigation -->
+    <header>
+        <nav class="navbar">
+            <div class="logo-container">
+                <img src="server.png" alt="Server Logo" class="logo-img">
+                <span class="logo-text">Chaos of Evoourth's</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="penjelasan.html">Penjelasan</a></li>
+                <li><a href="p2w.html">P2W</a></li>
+                <li><a href="team.html">Tim</a></li>
+            </ul>
+
+            <!-- User Section -->
+            <div class="user-section">
+                <button class="btn-profile" id="profileBtn" title="Profil Saya">👤</button>
+                <button class="btn-logout" id="logoutBtn" title="Logout">🚪</button>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Profile Modal -->
+    <div class="modal" id="profileModal">
+        <div class="modal-content profile-modal">
+            <span class="close" id="closeProfileModal">&times;</span>
+            <div class="profile-header">
+                <div class="profile-avatar-container">
+                    <img src="" alt="User Avatar" class="profile-avatar" id="profileAvatar">
+                    <label class="avatar-upload-label">
+                        <input type="file" id="avatarInput" accept="image/*" style="display: none;">
+                        📷
+                    </label>
+                </div>
+                <h2 id="profileUsername">Username</h2>
+                <p class="profile-role">Member</p>
+            </div>
+            <div class="profile-body">
+                <div class="profile-info">
+                    <div class="info-item">
+                        <label>Email:</label>
+                        <span id="profileEmail">email@example.com</span>
+                    </div>
+                    <div class="info-item">
+                        <label>Bergabung:</label>
+                        <span id="profileJoinDate">01 Januari 2025</span>
+                    </div>
+                </div>
+                <div class="profile-actions">
+                    <button class="btn btn-primary" id="editProfileBtn">✏️ Edit Profil</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Profile Modal -->
+    <div class="modal" id="editProfileModal">
+        <div class="modal-content edit-modal">
+            <span class="close" id="closeEditModal">&times;</span>
+            <h2>Edit Profil</h2>
+            <form id="editProfileForm" onsubmit="saveProfile(event)">
+                <div class="form-group">
+                    <label>Username</label>
+                    <input type="text" id="editUsername" placeholder="Username" required>
+                </div>
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" id="editEmail" placeholder="Email" required>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+                    <button type="button" class="btn btn-secondary" id="cancelEditBtn">Batal</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <h1>👑 Shop P2W</h1>
+        <p>Beli Ranks dan Kits untuk pengalaman bermain yang lebih baik</p>
+    </section>
+
+    <!-- Ranks Section -->
+    <section class="p2w-section">
+        <div class="container">
+            <h2>👑 Daftar Ranks</h2>
+            <div class="p2w-grid">
+                <!-- Rank 1 -->
+                <div class="p2w-card">
+                    <div class="rank-badge">Rank 1</div>
+                    <h3>Master</h3>
+                    <div class="price">Rp 40.000</div>
+                    <button class="btn btn-primary buy-btn" onclick="buyRank('Master', 40000)">Beli Sekarang</button>
+                </div>
+
+                <!-- Rank 2 -->
+                <div class="p2w-card featured">
+                    <div class="badge-popular">POPULER</div>
+                    <div class="rank-badge">Rank 2</div>
+                    <h3>Villain</h3>
+                    <div class="price">Rp 50.000</div>
+                   
+                    <button class="btn btn-primary buy-btn" onclick="buyRank('Villain', 50000)">Beli Sekarang</button>
+                </div>
+
+                <!-- Rank 3 -->
+                <div class="p2w-card">
+                    <div class="rank-badge">Rank 3</div>
+                    <h3>therat</h3>
+                    <div class="price">Rp 70.000</div>
+                    <button class="btn btn-primary buy-btn" onclick="buyRank('therat', 70000)">Beli Sekarang</button>
+                </div>
+
+                <!-- Rank 4 -->
+                <div class="p2w-card">
+                    <div class="badge-best">TERBAIK</div>
+                    <div class="rank-badge">Rank 4</div>
+                    <h3>UNSTOPABBLE</h3>
+                    <div class="price">Rp 100.000</div>
+                    <button class="btn btn-primary buy-btn" onclick="buyRank('UNSTOPABBLE', 100000)">Beli Sekarang</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Kits Section -->
+    <section class="kits-section">
+        <div class="container">
+            <h2>🎁 Daftar Kits</h2>
+            <div class="p2w-grid">
+                <!-- Kit 1 -->
+                <div class="p2w-card">
+                    <div class="kit-badge">Kit 1</div>
+                    <h3>Kit Pvp</h3>
+                    <div class="price">Rp 15.000</div>
+                    <button class="btn btn-primary buy-btn" onclick="buyKit('Kit Pvp', 15000)">Beli Sekarang</button>
+                </div>
+
+                <!-- Kit 2 -->
+                <div class="p2w-card featured">
+                    <div class="badge-popular">TERPOPULER</div>
+                    <div class="kit-badge">Kit 2</div>
+                    <h3>Kit Pro</h3>
+                    <div class="price">Rp 25.000</div>
+                    <button class="btn btn-primary buy-btn" onclick="buyKit('Kit Pro', 25000)">Beli Sekarang</button>
+                </div>
+
+                <!-- Kit 3 -->
+                <div class="p2w-card">
+                    <div class="kit-badge">Kit 3</div>
+                    <h3>Kit expert</h3>
+                    <div class="price">Rp 50.000</div>
+                    <button class="btn btn-primary buy-btn" onclick="buyKit('Kit expert', 50000)">Beli Sekarang</button>
+                </div>
+            </div>  
+        </div>
+    </section>
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2025 Chaos of Evoourth's Server. Semua hak dilindungi.</p>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        // ⚙️ KONFIGURASI WHATSAPP
+        const WHATSAPP_NUMBER = '6285880212494';
+
+        document.getElementById('whatsappNumber').textContent = formatPhoneNumber(WHATSAPP_NUMBER);
+
+        function formatPhoneNumber(phone) {
+            const cleaned = phone.replace(/\D/g, '');
+            if (cleaned.startsWith('62')) {
+                const rest = cleaned.substring(2);
+                return '+62 ' + rest.substring(0, 3) + '-' + rest.substring(3, 7) + '-' + rest.substring(7);
+            }
+            return '+' + cleaned;
+        }
+
+        function buyRank(rankName, price) {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            const message = `Halo, saya ingin membeli rank *${rankName}* seharga *Rp ${price.toLocaleString('id-ID')}*. Username Minecraft saya: ${currentUser.username}`;
+            const whatsappURL = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+            window.open(whatsappURL, '_blank');
+        }
+
+        function buyKit(kitName, price) {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            const message = `Halo, saya ingin membeli kit *${kitName}* seharga *Rp ${price.toLocaleString('id-ID')}*. Username Minecraft saya: ${currentUser.username}`;
+            const whatsappURL = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+            window.open(whatsappURL, '_blank');
+        }
+
+        function loadProfile() {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            if (!currentUser) {
+                window.location.href = 'login.html';
+                return;
+            }
+
+            document.getElementById('profileUsername').textContent = currentUser.username;
+            document.getElementById('profileEmail').textContent = currentUser.email;
+            document.getElementById('profileAvatar').src = currentUser.avatar;
+            
+            const joinDate = new Date(currentUser.createdAt);
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            document.getElementById('profileJoinDate').textContent = joinDate.toLocaleDateString('id-ID', options);
+
+            document.getElementById('editUsername').value = currentUser.username;
+            document.getElementById('editEmail').value = currentUser.email;
+        }
+
+        document.getElementById('profileBtn').addEventListener('click', () => {
+            document.getElementById('profileModal').style.display = 'flex';
+        });
+
+        document.getElementById('closeProfileModal').addEventListener('click', () => {
+            document.getElementById('profileModal').style.display = 'none';
+        });
+
+        document.getElementById('editProfileBtn').addEventListener('click', () => {
+            document.getElementById('profileModal').style.display = 'none';
+            document.getElementById('editProfileModal').style.display = 'flex';
+        });
+
+        document.getElementById('closeEditModal').addEventListener('click', () => {
+            document.getElementById('editProfileModal').style.display = 'none';
+        });
+
+        document.getElementById('cancelEditBtn').addEventListener('click', () => {
+            document.getElementById('editProfileModal').style.display = 'none';
+        });
+
+        document.getElementById('avatarInput').addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            const reader = new FileReader();
+
+            reader.onload = (event) => {
+                const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+                currentUser.avatar = event.target.result;
+                
+                const users = JSON.parse(localStorage.getItem('users'));
+                const userIndex = users.findIndex(u => u.id === currentUser.id);
+                users[userIndex] = currentUser;
+
+                localStorage.setItem('users', JSON.stringify(users));
+                localStorage.setItem('currentUser', JSON.stringify(currentUser));
+
+                document.getElementById('profileAvatar').src = currentUser.avatar;
+            };
+
+            reader.readAsDataURL(file);
+        });
+
+        function saveProfile(e) {
+            e.preventDefault();
+            
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            const newUsername = document.getElementById('editUsername').value;
+            const newEmail = document.getElementById('editEmail').value;
+
+            const users = JSON.parse(localStorage.getItem('users'));
+            const userIndex = users.findIndex(u => u.id === currentUser.id);
+
+            currentUser.username = newUsername;
+            currentUser.email = newEmail;
+
+            users[userIndex] = currentUser;
+            localStorage.setItem('users', JSON.stringify(users));
+            localStorage.setItem('currentUser', JSON.stringify(currentUser));
+
+            loadProfile();
+            document.getElementById('editProfileModal').style.display = 'none';
+            alert('Profil berhasil diperbarui!');
+        }
+
+        document.getElementById('logoutBtn').addEventListener('click', () => {
+            if (confirm('Yakin ingin logout?')) {
+                localStorage.removeItem('currentUser');
+                window.location.href = 'login.html';
+            }
+        });
+
+        window.addEventListener('click', (e) => {
+            const profileModal = document.getElementById('profileModal');
+            const editModal = document.getElementById('editProfileModal');
+            
+            if (e.target === profileModal) {
+                profileModal.style.display = 'none';
+            }
+            if (e.target === editModal) {
+                editModal.style.display = 'none';
+            }
+        });
+
+        loadProfile();
+    </script>
+</body>
+</html>
