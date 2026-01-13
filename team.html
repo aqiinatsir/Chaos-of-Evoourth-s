@@ -25,10 +25,49 @@
             align-items: center;
             gap: 10px;
         }
+
+        .avatar-wrapper {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 18px;
+        }
+
+        .avatar-edit-label {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            background: linear-gradient(135deg, #c0c0c0, #d3d3d3);
+            color: #0a0e27;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            border: 2px solid #1a1f3a;
+            box-shadow: 0 4px 12px rgba(192, 192, 192, 0.3);
+        }
+
+        .avatar-edit-label:hover {
+            background: linear-gradient(135deg, #7c3aed, #5b21b6);
+            color: white;
+            transform: scale(1.1);
+        }
+
+        .team-member-avatar {
+            width: 110px;
+            height: 110px;
+            border-radius: 50%;
+            border: 3px solid #c0c0c0;
+            object-fit: cover;
+            background-color: #808080;
+        }
     </style>
 </head>
 <body>
-    <!-- Header & Navigation -->
     <header>
         <nav class="navbar">
             <div class="logo-container">
@@ -42,7 +81,6 @@
                 <li><a href="team.html">Tim</a></li>
             </ul>
 
-            <!-- User Section -->
             <div class="user-section">
                 <button class="btn-profile" id="profileBtn" title="Profil Saya">👤</button>
                 <button class="btn-logout" id="logoutBtn" title="Logout">🚪</button>
@@ -50,7 +88,6 @@
         </nav>
     </header>
 
-    <!-- Profile Modal -->
     <div class="modal" id="profileModal">
         <div class="modal-content profile-modal">
             <span class="close" id="closeProfileModal">&times;</span>
@@ -77,13 +114,12 @@
                     </div>
                 </div>
                 <div class="profile-actions">
-                    <button class="btn btn-primary" id="editProfileBtn">✏️ Edit Profil</button>
+                    <button class="btn btn-primary" id="editProfileBtn">Edit Profil</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Edit Profile Modal -->
     <div class="modal" id="editProfileModal">
         <div class="modal-content edit-modal">
             <span class="close" id="closeEditModal">&times;</span>
@@ -105,98 +141,91 @@
         </div>
     </div>
 
-    <!-- Page Header -->
     <section class="page-header">
         <h1>👥 Tim Evoourth's</h1>
         <p>Bertemu dengan tim yang menjalankan server</p>
     </section>
 
-    <!-- Team Section -->
     <section class="team-section">
         <div class="container">
-            <!-- Owner -->
             <div class="team-category">
                 <h2>👑 Owner</h2>
                 <div class="team-grid-single">
                     <div class="team-card">
-                        <div class="member-avatar">👤</div>
+                        <div class="avatar-wrapper">
+                            <img src="rizki.png" alt="Rizki" class="team-member-avatar">
+                        </div>
                         <h3>Rizki</h3>
                         <p class="member-role">Server Owner</p>
                         <p class="member-desc">Founder dan creator dari Chaos of Evoourth's. Bertanggung jawab atas semua aspek server dan pengembangan.</p>
-                        <div class="member-social">
-                        </div>
                     </div>
                 </div>
             </div>
 
-             <!-- Developer -->
             <div class="team-category">
-                <h2>⚔️ Co-Owner</h2>
+                <h2>Developer</h2>
                 <div class="team-grid-single">
                     <div class="team-card">
-                        <div class="member-avatar">👤</div>
+                        <div class="avatar-wrapper">
+                            <img src="alez.png" alt="alez" class="team-member-avatar">
+                        </div>
                         <h3>alez</h3>
                         <p class="member-role">Developer</p>
-                        <p class="member-desc">Melakuakn setup,setting,dan penambahan sistem lainnya</p>
-                        <div class="member-social">
-                        </div>
+                        <p class="member-desc">Melakukan setup, setting, dan penambahan sistem lainnya</p>
                     </div>
                 </div>
             </div>
 
-            <!-- Co-Owner -->
             <div class="team-category">
-                <h2>⚔️ Co-Owner</h2>
+                <h2>Co-Owner</h2>
                 <div class="team-grid-single">
                     <div class="team-card">
-                        <div class="member-avatar">👤</div>
+                        <div class="avatar-wrapper">
+                            <img src="avatars/rapa.png" alt="Rapa" class="team-member-avatar">
+                        </div>
                         <h3>Rapa</h3>
                         <p class="member-role">Co-Owner</p>
                         <p class="member-desc">Membantu mengelola server dan mengembangkan fitur-fitur baru untuk pengalaman bermain yang lebih baik.</p>
-                        </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Admins -->
             <div class="team-category">
-                <h2>🛡️ Administrators</h2>
+                <h2>Administrators</h2>
                 <div class="team-grid">
                     <div class="team-card">
-                        <div class="member-avatar">👤</div>
+                        <div class="avatar-wrapper">
+                            <img src="zail.png" alt="Zail" class="team-member-avatar">
+                        </div>
                         <h3>Zail</h3>
                         <p class="member-role">Administrator</p>
                         <p class="member-desc">Mengelola semua hal teknis server, menangani laporan bug, dan memastikan server berjalan lancar.</p>
-                        <div class="member-social">
-                        </div>
                     </div>
 
                     <div class="team-card">
-                        <div class="member-avatar">👤</div>
+                        <div class="avatar-wrapper">
+                            <img src="bayu.png" alt="bayu" class="team-member-avatar">
+                        </div>
                         <h3>bayu</h3>
-                        <p class="member-role">scripter</p>
-                        <p class="member-desc">Membuat naskah untuk di baca pada saat melakukan Roleplay</p>
-                        <div class="member-social">
-                        </div>
+                        <p class="member-role">Scripter</p>
+                        <p class="member-desc">Membuat naskah untuk dibaca pada saat melakukan Roleplay</p>
                     </div>
 
                     <div class="team-card">
-                        <div class="member-avatar">👤</div>
+                        <div class="avatar-wrapper">
+                            <img src="melo.png" alt="melo" class="team-member-avatar">
+                        </div>
                         <h3>melo</h3>
                         <p class="member-role">Builder</p>
-                        <p class="member-desc">membangun sebuah tempat yang di jadikan tempat Roleplay</p>
-                        <div class="member-social">
-                        </div>
+                        <p class="member-desc">Membangun sebuah tempat yang dijadikan tempat Roleplay</p>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-
-    <!-- Footer -->
     <footer>
-        <p>&copy; 2025 Chaos of Evoourth's Server. Semua hak dilindungi.</p>
+        <p>Copyright 2025 Chaos of Evoourth's Server. Semua hak dilindungi.</p>
     </footer>
 
     <script src="script.js"></script>
@@ -218,6 +247,35 @@
 
             document.getElementById('editUsername').value = currentUser.username;
             document.getElementById('editEmail').value = currentUser.email;
+        }
+
+        document.querySelectorAll('.avatar-upload').forEach(input => {
+            input.addEventListener('change', (e) => {
+                const file = e.target.files[0];
+                const memberName = e.target.dataset.member;
+                
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = (event) => {
+                        localStorage.setItem('avatar_' + memberName, event.target.result);
+                        const imgElement = e.target.closest('.avatar-wrapper').querySelector('.team-member-avatar');
+                        imgElement.src = event.target.result;
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+        });
+
+        function loadTeamAvatars() {
+            document.querySelectorAll('.team-member-avatar').forEach(img => {
+                const srcPath = img.src;
+                const memberName = srcPath.split('/').pop().replace('.png', '');
+                
+                const savedAvatar = localStorage.getItem('avatar_' + memberName);
+                if (savedAvatar) {
+                    img.src = savedAvatar;
+                }
+            });
         }
 
         document.getElementById('profileBtn').addEventListener('click', () => {
@@ -304,6 +362,7 @@
         });
 
         loadProfile();
+        loadTeamAvatars();
     </script>
 </body>
 </html>
