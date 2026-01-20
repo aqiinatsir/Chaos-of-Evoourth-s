@@ -1,97 +1,183 @@
-// Smooth scrolling untuk link navigasi
+// ============================================
+// HAMBURGER MENU RESPONSIVE
+// ============================================
+document.addEventListener('DOMContentLoaded', function() {
+    // Create hamburger if it doesn't exist
+    if (!document.querySelector('.hamburger')) {
+        const navbar = document.querySelector('.navbar');
+        const hamburger = document.createElement('div');
+        hamburger.className = 'hamburger';
+        hamburger.innerHTML = '<span></span><span></span><span></span>';
+        navbar.insertBefore(hamburger, document.querySelector('.user-section'));
+    }
+
+    const hamburger = document.querySelector('.hamburger');
+    const navMenu = document.querySelector('.nav-menu');
+
+    // Toggle menu on hamburger click
+    if (hamburger) {
+        hamburger.addEventListener('click', function() {
+            hamburger.classList.toggle('active');
+            navMenu.classList.toggle('active');
+        });
+    }
+
+    // Close menu when a link is clicked
+    const navLinks = document.querySelectorAll('.nav-menu a');
+    navLinks.forEach(link => {
+        link.addEventListener('click', function() {
+            hamburger.classList.remove('active');
+            navMenu.classList.remove('active');
+        });
+    });
+
+    // Close menu when clicking outside
+    document.addEventListener('click', function(event) {
+        const isClickInsideNav = document.querySelector('.navbar').contains(event.target);
+        
+        if (!isClickInsideNav && navMenu.classList.contains('active')) {
+            hamburger.classList.remove('active');
+            navMenu.classList.remove('active');
+        }
+    });
+
+    // Handle window resize
+    let isDesktop = window.innerWidth > 768;
+    
+    window.addEventListener('resize', function() {
+        const currentSize = window.innerWidth > 768;
+        
+        if (currentSize !== isDesktop) {
+            isDesktop = currentSize;
+            
+            if (isDesktop) {
+                // Remove mobile menu
+                hamburger.classList.remove('active');
+                navMenu.classList.remove('active');
+            }
+        }
+    });
+});
+
+// ============================================
+// MODAL HANDLING
+// ============================================
+function openModal(modalId) {
+    const modal = document.getElementById(modalId);
+    if (modal) {
+        modal.style.display = 'flex';
+        setTimeout(() => modal.classList.add('show'), 10);
+    }
+}
+
+function closeModal(modalId) {
+    const modal = document.getElementById(modalId);
+    if (modal) {
+        modal.classList.remove('show');
+        setTimeout(() => modal.style.display = 'none', 300);
+    }
+}
+
+// ============================================
+// SMOOTH SCROLL
+// ============================================
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
-        e.preventDefault();
-        const target = document.querySelector(this.getAttribute('href'));
-        if (target) {
-            target.scrollIntoView({
-                behavior: 'smooth'
-            });
+        const href = this.getAttribute('href');
+        if (href !== '#') {
+            e.preventDefault();
+            const target = document.querySelector(href);
+            if (target) {
+                target.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
         }
     });
 });
 
-// Highlight nav menu item yang aktif
-window.addEventListener('scroll', () => {
-    let current = '';
-    const sections = document.querySelectorAll('section[id]');
+// ============================================
+// FORM VALIDATION
+// ============================================
+function validateEmail(email) {
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return re.test(email);
+}
+
+function validatePassword(password) {
+    return password.length >= 6;
+}
+
+// ============================================
+// LOADING ANIMATION
+// ============================================
+window.addEventListener('load', function() {
+    document.body.style.opacity = '1';
+});
+
+// ============================================
+// MOBILE MENU HEIGHT ADJUSTMENT
+// ============================================
+function adjustMenuHeight() {
+    const navMenu = document.querySelector('.nav-menu');
+    if (navMenu && navMenu.classList.contains('active')) {
+        const menuItems = navMenu.querySelectorAll('li').length;
+        const itemHeight = 60; // approximate height per item
+        navMenu.style.maxHeight = (menuItems * itemHeight) + 'px';
+    }
+}
+
+window.addEventListener('resize', adjustMenuHeight);
+
+// ============================================
+// UTILITY FUNCTIONS
+// ============================================
+function showNotification(message, type = 'success') {
+    const notification = document.createElement('div');
+    notification.className = `notification notification-${type}`;
+    notification.textContent = message;
+    notification.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        padding: 15px 25px;
+        background: ${type === 'success' ? '#10b981' : '#ef4444'};
+        color: white;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        z-index: 9999;
+        animation: slideIn 0.3s ease;
+    `;
     
-    sections.forEach(section => {
-        const sectionTop = section.offsetTop;
-        if (scrollY >= sectionTop - 200) {
-            current = section.getAttribute('id');
-        }
-    });
-
-    document.querySelectorAll('.nav-menu a').forEach(link => {
-        link.classList.remove('active');
-        if (link.getAttribute('href').slice(1) === current) {
-            link.classList.add('active');
-        }
-    });
-});
-
-// Animasi fade-in saat halaman dimuat
-window.addEventListener('load', () => {
-    document.querySelectorAll('.feature-card, .p2w-card, .team-card, .contact-card').forEach(card => {
-        card.style.opacity = '0';
-        card.style.transform = 'translateY(20px)';
-    });
-
+    document.body.appendChild(notification);
+    
     setTimeout(() => {
-        document.querySelectorAll('.feature-card, .p2w-card, .team-card, .contact-card').forEach((card, index) => {
-            setTimeout(() => {
-                card.style.transition = 'all 0.5s ease';
-                card.style.opacity = '1';
-                card.style.transform = 'translateY(0)';
-            }, index * 100);
-        });
-    }, 100);
-});
+        notification.style.animation = 'slideOut 0.3s ease';
+        setTimeout(() => notification.remove(), 300);
+    }, 3000);
+}
 
-// Ripple effect untuk buttons
-document.querySelectorAll('.btn').forEach(button => {
-    button.addEventListener('click', function(e) {
-        const ripple = document.createElement('span');
-        const rect = this.getBoundingClientRect();
-        const size = Math.max(rect.width, rect.height);
-        const x = e.clientX - rect.left - size / 2;
-        const y = e.clientY - rect.top - size / 2;
+function formatCurrency(amount) {
+    return new Intl.NumberFormat('id-ID', {
+        style: 'currency',
+        currency: 'IDR',
+        minimumFractionDigits: 0
+    }).format(amount);
+}
 
-        ripple.style.width = ripple.style.height = size + 'px';
-        ripple.style.left = x + 'px';
-        ripple.style.top = y + 'px';
-        ripple.classList.add('ripple');
+// ============================================
+// ANALYTICS & TRACKING
+// ============================================
+function trackEvent(eventName, details = {}) {
+    console.log(`Event: ${eventName}`, details);
+    // Add your analytics code here
+}
 
-        this.appendChild(ripple);
-
-        setTimeout(() => ripple.remove(), 600);
-    });
-});
-
-// Lazy loading untuk cards
-const observerOptions = {
-    threshold: 0.1,
-    rootMargin: '0px 0px -100px 0px'
-};
-
-const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            entry.target.style.opacity = '1';
-            entry.target.style.transform = 'translateY(0)';
-            observer.unobserve(entry.target);
-        }
-    });
-}, observerOptions);
-
-document.querySelectorAll('.feature-card, .p2w-card, .team-card, .contact-card').forEach(card => {
-    card.style.opacity = '0';
-    card.style.transform = 'translateY(20px)';
-    card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
-    observer.observe(card);
-});
-
-// Console message
-console.log('%c⚔️ Chaos of Evoourth\'s Server', 'font-size: 24px; color: #c0c0c0; font-weight: bold; text-shadow: 0 0 10px #7c3aed;');
-console.log('%cSelamat datang di Chaos! Bergabunglah sekarang!', 'font-size: 14px; color: #b0b0b0;');
+// ============================================
+// INITIALIZATION
+// ============================================
+(function init() {
+    console.log('Chaos of Evoourth\'s initialized');
+    adjustMenuHeight();
+})();
