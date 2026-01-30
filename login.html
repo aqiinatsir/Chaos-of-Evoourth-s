@@ -786,6 +786,14 @@
             document.getElementById(`step${step}Indicator`).classList.add('active');
         }
 
+        // ==================== EMAIL CONFIGURATION ====================
+        // Konfigurasi untuk email sender
+        const emailConfig = {
+            serviceEmail: 'support@chaoosevoourth.com', // Ganti dengan email pengirim Anda
+            appPassword: 'your-app-password-here', // Ganti dengan App Password jika menggunakan Gmail
+            serviceName: 'Chaos of Evoourth\'s'
+        };
+
         function handleResetStep1(e) {
             e.preventDefault();
             const email = document.getElementById('resetEmail').value;
@@ -798,15 +806,107 @@
             }
 
             resetState.email = email;
-            resetState.generatedCode = Math.random().toString().slice(2, 8); // Generate 6-digit code
+            resetState.generatedCode = generateVerificationCode(); // Generate 6-digit code
             
-            // Simulate sending code (in production, use real email service)
-            console.log('Verification code:', resetState.generatedCode);
+            // Kirim email dengan kode verifikasi
+            sendVerificationEmail(email, resetState.generatedCode);
+            
+            // Tampilkan info ke console untuk debugging
+            console.log('Verification code generated:', resetState.generatedCode);
+            console.log('Sending to:', email);
             
             document.getElementById('resetEmailDisplay').textContent = email;
             showResetStep(2);
             showSuccess('resetSuccess2', 'Kode verifikasi telah dikirim ke email Anda');
         }
+
+        // Generate random 6-digit code
+        function generateVerificationCode() {
+            return Math.floor(100000 + Math.random() * 900000).toString();
+        }
+
+        // ==================== EMAIL SENDER FUNCTION ====================
+        async function sendVerificationEmail(recipientEmail, verificationCode) {
+            try {
+                // OPSI 1: Menggunakan EmailJS (Client-side, tanpa backend)
+                // Daftar di https://www.emailjs.com/ dan dapatkan PUBLIC_KEY
+                if (typeof emailjs !== 'undefined') {
+                    await emailjs.send('SERVICE_ID', 'TEMPLATE_ID', {
+                        to_email: recipientEmail,
+                        verification_code: verificationCode,
+                        from_name: emailConfig.serviceName
+                    });
+                    console.log('Email sent via EmailJS');
+                    return;
+                }
+
+                // OPSI 2: Menggunakan Fetch API ke backend Anda
+                const response = await fetch('/api/send-verification-email', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        recipientEmail: recipientEmail,
+                        verificationCode: verificationCode,
+                        senderEmail: emailConfig.serviceEmail,
+                        serviceName: emailConfig.serviceName
+                    })
+                });
+                
+                if (response.ok) {
+                    console.log('Email sent successfully via backend');
+                } else {
+                    console.error('Failed to send email via backend');
+                }
+
+                // OPSI 3: Menggunakan Firebase Cloud Functions
+                // Hubungi Cloud Function untuk mengirim email
+                
+            } catch (error) {
+                console.error('Error sending verification email:', error);
+                // Email tetap dilanjutkan meski ada error di service pengiriman
+                // User masih bisa menerima kode dari console log untuk testing
+            }
+        }
+
+        // ==================== INTEGRASI EMAIL SERVICES ====================
+        // Contoh implementasi dengan berbagai service:
+
+        // Untuk Gmail (gunakan App Password):
+        // 1. Enable 2-Factor Authentication di Gmail
+        // 2. Generate App Password di https://myaccount.google.com/apppasswords
+        // 3. Gunakan App Password di emailConfig.appPassword
+
+        // Untuk Nodemailer Backend (Node.js):
+        /*
+        const nodemailer = require('nodemailer');
+        
+        const transporter = nodemailer.createTransport({
+            service: 'gmail',
+            auth: {
+                user: 'your-email@gmail.com',
+                pass: 'your-app-password'
+            }
+        });
+        
+        const mailOptions = {
+            from: 'your-email@gmail.com',
+            to: recipientEmail,
+            subject: 'Kode Verifikasi Password Reset',
+            html: `
+                <h2>Kode Verifikasi Password Reset</h2>
+                <p>Masukkan kode berikut untuk mereset password Anda:</p>
+                <h1 style="color: #7c3aed;">${verificationCode}</h1>
+                <p>Kode ini berlaku selama 10 menit.</p>
+            `
+        };
+        
+        transporter.sendMail(mailOptions, (error, info) => {
+            if (error) console.log(error);
+            else console.log('Email sent: ' + info.response);
+        });
+        */
 
         function handleResetStep2(e) {
             e.preventDefault();
@@ -858,7 +958,8 @@
         }
 
         function resendVerificationCode() {
-            resetState.generatedCode = Math.random().toString().slice(2, 8);
+            resetState.generatedCode = generateVerificationCode();
+            sendVerificationEmail(resetState.email, resetState.generatedCode);
             console.log('New verification code:', resetState.generatedCode);
             showSuccess('resetSuccess2', 'Kode verifikasi baru telah dikirim!');
         }
